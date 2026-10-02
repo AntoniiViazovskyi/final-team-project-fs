@@ -76,10 +76,23 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const origin = request.headers.get('origin')
+  if (origin) {
+    try {
+      if (
+        new URL(origin).host !==
+        (request.headers.get('host') ?? request.nextUrl.host)
+      ) {
+        throw new Error('Invalid origin')
+      }
+    } catch {
+      return Response.json({ message: 'Invalid request origin' }, { status: 403 })
+    }
+  }
   const accessToken = request.cookies.get('accessToken')?.value
   const sessionId = request.cookies.get('sessionId')?.value
 
-  if (!accessToken || !sessionId) {
+  if (!accessToken || !sessionId || !/^[a-f\d]{24}$/i.test(sessionId)) {
     return Response.json({ message: 'Not authorized' }, { status: 401 })
   }
 
@@ -109,7 +122,10 @@ export async function POST(request: NextRequest) {
       throw new Error('Unsupported backend protocol')
     }
 
-    if (backendUrl.origin === request.nextUrl.origin) {
+    if (
+      backendUrl.origin === request.nextUrl.origin ||
+      backendUrl.host === request.headers.get('host')
+    ) {
       throw new Error('Backend origin points to the frontend')
     }
   } catch {
@@ -133,13 +149,12 @@ export async function POST(request: NextRequest) {
       signal: AbortSignal.timeout(10_000),
     })
   } catch {
-    return Response.json(
-      { message: 'Backend is unavailable' },
-      { status: 502 },
-    )
+    return Response.json({ message: 'Backend is unavailable' }, { status: 502 })
   }
 
-  if (!backendResponse.headers.get('content-type')?.includes('application/json')) {
+  if (
+    !backendResponse.headers.get('content-type')?.includes('application/json')
+  ) {
     return Response.json(
       { message: 'Invalid backend response' },
       { status: 502 },

@@ -1,0 +1,27 @@
+.title {
+  margin: 0 0 24px;
+  color: #000;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 26px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.title:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 32px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .title {
+    font-size: 48px;
+  }
+}
