@@ -123,7 +123,9 @@ const Pagination = ({
           disabled={currentPage === 1}
           aria-label="Previous page"
         >
-          ←
+          <svg width="24" height="24" aria-hidden="true">
+            <use href="/icons/sprite.svg#icon-chevron-left" />
+          </svg>
         </button>
 
         {renderItems(createPaginationItems(currentPage, totalPages))}
@@ -135,7 +137,9 @@ const Pagination = ({
           disabled={currentPage === totalPages}
           aria-label="Next page"
         >
-          →
+          <svg width="24" height="24" aria-hidden="true">
+            <use href="/icons/sprite.svg#icon-chevron-left" />
+          </svg>
         </button>
       </div>
 
@@ -147,7 +151,9 @@ const Pagination = ({
           disabled={currentPage === 1}
           aria-label="Previous page"
         >
-          ←
+          <svg width="24" height="24" aria-hidden="true">
+            <use href="/icons/sprite.svg#icon-chevron-right" />
+          </svg>
         </button>
 
         {renderItems(createPaginationItems(currentPage, totalPages, true))}
