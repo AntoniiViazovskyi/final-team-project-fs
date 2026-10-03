@@ -61,8 +61,6 @@ margin-left: 8px;
 
 a.link{
 text-decoration: underline;
-font-weight: var(--font-weight-regular);
-
 text-decoration-skip-ink: none;
 font-size: var(--font-size-small);
 line-height: var(--line-height-text); 
